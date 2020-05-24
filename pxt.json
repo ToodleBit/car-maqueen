@@ -1,0 +1,35 @@
+{
+    "name": "maqueen",
+    "version": "1.3.1",
+    "description": "Affordable mini robot designed by DFRobot",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "maqueen.ts",
+        "enums.d.ts",
+        "maqueenIR.cpp",
+        "ReceiverIR.cpp",
+        "ReceiverIR.h",
+        "RemoteIR.h",
+        "TransmitterIR.cpp",
+        "TransmitterIR.h",
+        "_locales/zh-cn/maqueen-strings.json",
+        "_locales/zh-tw/maqueen-strings.json",
+        "_locales/pt/maqueen-strings.json",
+        "_locales/ja/maqueen-strings.json",
+        "_locales/fr/maqueen-strings.json",
+        "_locales/es/maqueen-strings.json",
+        "shims.d.ts",
+        "README.md"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
+}
