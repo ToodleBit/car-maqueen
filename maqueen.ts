@@ -34,8 +34,8 @@ interface KV {
     action: Action;
 }
 
-//% weight=10 color=#008B00 icon="\uf136" block="Maqueen"
-namespace maqueen {
+//% color=#008C8C weight=10 icon="\uf1b9"
+namespace ToodleCar {
 
     let kbCallback: KV[] = []
 
@@ -61,9 +61,9 @@ namespace maqueen {
     }
 
     export enum Dir {
-        //% blockId="CW" block="Forward"
+        //% blockId="CW" block="forward"
         CW = 0x0,
-        //% blockId="CCW" block="Backward"
+        //% blockId="CCW" block="backward"
         CCW = 0x1
     }
 
@@ -178,8 +178,9 @@ namespace maqueen {
      * Read ultrasonic sensor.
      */
 
-    //% blockId=ultrasonic_sensor block="read ultrasonic sensor |%unit "
+    //% blockId=ultrasonic_sensor block="sensor unit |%unit "
     //% weight=95
+    //% advanced=true
     export function Ultrasonic(unit: PingUnit, maxCmDistance = 500): number {
         let d
         pins.digitalWritePin(DigitalPin.P1, 0);
@@ -363,4 +364,14 @@ namespace maqueen {
         basic.pause(50);
     })
 
+      /**
+    * Pause for the specified time in seconds
+    * @param sec how long to pause for, eg: 1, 2, 5
+    */
+	//% weight=10
+    //% block="pause (seconds) $sec"
+    export function mypause(sec: number): void {
+        basic.pause(sec * 1000);
+    }
+    
 }
