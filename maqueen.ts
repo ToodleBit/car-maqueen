@@ -81,9 +81,9 @@ namespace ToodleCar {
         PatrolRight = 0x20
     }
     export enum Voltage {
-        //%block="high"
+        //%block="found"
         High = 0x01,
-        //% block="low"
+        //% block="lost"
         Low = 0x00
     }
 
@@ -124,49 +124,6 @@ namespace ToodleCar {
         alreadyInit = 1
     }
 
-    //% weight=2
-    //% blockGap=50
-    //% blockId=IR_callbackUser block="on IR received"
-    export function IR_callbackUser(maqueencb: (message: number) => void) {
-        maqueenInit();
-        IR_callback(() => {
-            const packet = new Packeta();
-            packet.mye = maqueene;
-            maqueenparam = getParam();
-            packet.myparam = maqueenparam;
-            maqueencb(packet.myparam);
-        });
-    }
-
-    /**
-     * Read IR sensor value.
-     */
-
-    //% weight=10
-    //% blockId=IR_read block="read IR key value"
-    export function IR_read(): number {
-        maqueenInit()
-        return getParam()
-    }
-
-    /**
-     * Read the version number.
-     */
-
-    //% weight=10
-    //% blockId=IR_read_version block="get product information"
-    export function IR_read_version(): string {
-        maqueenInit()
-        pins.i2cWriteNumber(0x10, 50, NumberFormat.UInt8BE);
-        let dataLen = pins.i2cReadNumber(0x10, NumberFormat.UInt8BE);
-        pins.i2cWriteNumber(0x10, 51, NumberFormat.UInt8BE);
-        let buf = pins.i2cReadBuffer(0x10, dataLen, false);
-        let version = "";
-        for (let index = 0; index < dataLen; index++) {
-            version += String.fromCharCode(buf[index])
-        }
-        return version
-    }
 
     function IR_callback(a: Action): void {
         maqueencb = a
@@ -276,6 +233,7 @@ namespace ToodleCar {
     //% weight=20
     //% blockId=read_Patrol block="read |%patrol line tracking sensor"
     //% patrol.fieldEditor="gridpicker" patrol.fieldOptions.columns=2 
+	//% advanced=true
     export function readPatrol(patrol: Patrol): number {
         if (patrol == Patrol.PatrolLeft) {
             return pins.digitalReadPin(DigitalPin.P13)
@@ -304,31 +262,13 @@ namespace ToodleCar {
         }
     }
 
-    /**
-     * Set the Maqueen servos.
-     */
-
-    //% weight=90
-    //% blockId=servo_ServoRun block="servo|%index|angle|%angle"
-    //% angle.min=0 angle.max=180
-    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
-    export function servoRun(index: Servos, angle: number): void {
-        let buf = pins.createBuffer(2);
-        if (index == 0) {
-            buf[0] = 0x14;
-        }
-        if (index == 1) {
-            buf[0] = 0x15;
-        }
-        buf[1] = angle;
-        pins.i2cWriteBuffer(0x10, buf);
-    }
 
      /**
      * Line tracking sensor event function
      */
     //% weight=2
-    //% blockId=kb_event block="on|%value line tracking sensor|%vi"
+    //% blockId=kb_event block="on|%value line |%vi"
+	//% advanced=true
     export function ltEvent(value: Patrol1, vi: Voltage, a: Action) {
          let state = value + vi;
         serial.writeNumber(state)
