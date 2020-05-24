@@ -466,5 +466,20 @@ namespace ToodleCar {
             pins.i2cWriteBuffer(0x10, buf);
 
     }
+	
+	//% weight=20
+    //% blockId=motor_motorStop block="brake"
+    export function motorStop(): void {
+        let buf = pins.createBuffer(3);
+ 
+            buf[0] = 0x00;
+            buf[1] = 0;
+            buf[2] = 0;
+            pins.i2cWriteBuffer(0x10, buf);
+            buf[0] = 0x02;
+            pins.i2cWriteBuffer(0x10, buf);
+
+    }
+
     
 }
