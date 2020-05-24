@@ -37,6 +37,23 @@ interface KV {
 //% color=#008C8C weight=10 icon="\uf1b9"
 namespace ToodleCar {
 
+	 /**
+	* Status List of Tracking Modules
+	*/
+    export enum TrackingState {
+        //% block="● ●" enumval=0
+        L_R_line,
+
+        //% block="◌ ●" enumval=1
+        L_unline_R_line,
+
+        //% block="● ◌" enumval=2
+        L_line_R_unline,
+
+        //% block="◌ ◌" enumval=3
+        L_R_unline
+    }
+	
     let kbCallback: KV[] = []
 
     export class Packeta {
@@ -312,6 +329,142 @@ namespace ToodleCar {
     //% block="pause (seconds) $sec"
     export function mypause(sec: number): void {
         basic.pause(sec * 1000);
+    }
+	
+	/**
+	* Checks the current status of tracking module. 
+	* @param state Four states of tracking module, eg: TrackingState.L_R_line
+    */
+    //% blockId=ringbitcar_tracking block="tracking state is %state"
+	//% advanced=true
+    export function tracking(state: TrackingState): boolean {
+
+        pins.setPull(DigitalPin.P13, PinPullMode.PullNone)
+        pins.setPull(DigitalPin.P14, PinPullMode.PullNone)
+        let left_tracking = pins.digitalReadPin(DigitalPin.P13);
+        let right_tracking = pins.digitalReadPin(DigitalPin.P14);
+        if (left_tracking == 0 && right_tracking == 0 && state == 0) {
+            return true;
+        }
+        else if (left_tracking == 1 && right_tracking == 0 && state == 1) {
+            return true;
+        }
+        else if (left_tracking == 0 && right_tracking == 1 && state == 2) {
+            return true;
+        }
+        else if (left_tracking == 1 && right_tracking == 1 && state == 3) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+	
+	/**
+    * Choose direction, speed and for how long.
+    * @param dir Driving direction, eg: Direction.forward
+    * @param speed Running speed, eg: 50
+    * @param time Travel time, eg: 3
+    */
+    //% blockId=move_time block="go %dir at %speed\\% for %time seconds"
+   //% speed.min=15 speed.max=100
+    export function moveTime(dir: Direction, speed: number, time: number): void {
+	
+	 let motorspeed = (Math.abs(speed) * 255) / 100;
+	 let Leftspeed = 255;
+	 let Rightspeed = 255;
+	 let leftmotordirection = 0x1;
+	 let rightmotordirection = 0x1;
+	 
+	   
+	   if (dir == 0){
+				leftmotordirection = 0x0;  //forwards
+				rightmotordirection = 0x0;
+				Leftspeed = motorspeed;
+				Rightspeed = motorspeed;
+	   } 
+	   else if (dir == 1){
+				leftmotordirection = 0x1;	//backwards
+				rightmotordirection = 0x1;
+				Leftspeed = motorspeed;
+				Rightspeed = motorspeed;
+	   } 
+	   else if (dir == 2){
+				leftmotordirection = 0x1;	//left
+				rightmotordirection = 0x0;
+				Leftspeed = motorspeed;
+				Rightspeed = motorspeed;
+	   } else {
+				leftmotordirection = 0x0;	//right
+				rightmotordirection = 0x1;
+				Leftspeed = motorspeed;
+				Rightspeed = motorspeed;
+	   }
+	   
+	   
+	   
+	   let buf = pins.createBuffer(3);
+
+            buf[0] = 0x00;
+            buf[1] = leftmotordirection;
+            buf[2] = Leftspeed;
+            pins.i2cWriteBuffer(0x10, buf);
+
+            buf[0] = 0x02;
+            buf[1] = rightmotordirection;
+            buf[2] = Rightspeed;
+            pins.i2cWriteBuffer(0x10, buf);
+
+		basic.pause(time * 1000);	//pause
+		
+		 buf[0] = 0x00;		//stop
+            buf[1] = 0;
+            buf[2] = 0;
+            pins.i2cWriteBuffer(0x10, buf);
+            buf[0] = 0x02;
+            pins.i2cWriteBuffer(0x10, buf);
+    }
+	
+	   /**
+     * Control the speed of left and right wheels. 
+     * @param lspeed Left wheel speed , eg: 50
+     * @param rspeed Right wheel speed, eg: 50
+     */
+    //% blockId=elecmotors block="drive: left wheel %lspeed\\% |right wheel %rspeed\\%"
+    //% lspeed.min=-100 lspeed.max=100
+    //% rspeed.min=-100 rspeed.max=100
+	//% weight=80
+    export function elecmotors(lspeed: number = 50, rspeed: number = 50): void {
+	   
+	 let Leftspeed = (Math.abs(lspeed) * 255) / 100;
+	 let Rightspeed = (Math.abs(rspeed) * 255) / 100;
+	 let leftmotordirection = 0x1;
+	 let rightmotordirection = 0x1;
+	 
+	   if (lspeed < 0){
+		   leftmotordirection = 0x1;
+	   } else {
+		   leftmotordirection = 0x0;
+	   }
+	   
+	   if (rspeed < 0){
+		   rightmotordirection = 0x1;
+	   } else {
+		   rightmotordirection = 0x0;
+	   }
+	   
+	   let buf = pins.createBuffer(3);
+
+            buf[0] = 0x00;
+            buf[1] = leftmotordirection;
+            buf[2] = Leftspeed;
+            pins.i2cWriteBuffer(0x10, buf);
+
+            buf[0] = 0x02;
+            buf[1] = rightmotordirection;
+            buf[2] = Rightspeed;
+            pins.i2cWriteBuffer(0x10, buf);
+
     }
     
 }
