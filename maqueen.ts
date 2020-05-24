@@ -6,9 +6,6 @@
  * 
  * @copyright    [DFRobot](http://www.dfrobot.com), 2016
  * @copyright    MIT Lesser General Public License
- * 
- * @author [email](jie.tang@dfrobot.com)
- * @date  2019-10-08
 */
 
 let maqueencb: Action
