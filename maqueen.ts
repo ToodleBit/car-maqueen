@@ -466,7 +466,7 @@ namespace ToodleCar {
 	
 	//% weight=20
     //% blockId=motor_motorStop block="brake"
-    export function motorStop(): void {
+    export function allmotorStop(): void {
         let buf = pins.createBuffer(3);
  
             buf[0] = 0x00;
