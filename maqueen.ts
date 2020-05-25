@@ -222,7 +222,7 @@ namespace ToodleCar {
      */
 
     //% weight=20
-    //% blockId=read_Patrol block="%patrol line sensor %mystate"
+    //% blockId=myread_Patrol block="%patrol line sensor %mystate"
     //% patrol.fieldEditor="gridpicker" patrol.fieldOptions.columns=2 
 	//% advanced=true
     export function myreadPatrol(patrol: Patrol, SelectedState: mystate): boolean {
