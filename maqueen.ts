@@ -34,6 +34,17 @@ interface KV {
 //% color=#008C8C weight=10 icon="\uf1b9"
 namespace ToodleCar {
 
+		 export enum OptDir {
+        //% block="forward" enumval=0
+        forward,
+        //% block="backward" enumval=1
+        backward,
+        //% block="left" enumval=2
+        left,
+        //% block="right" enumval=3
+        right
+    }
+	
 	 /**
 	* Status List of Tracking Modules
 	*/
@@ -175,70 +186,7 @@ namespace ToodleCar {
 
     }
 
-    /**
-     * Set the direction and speed of Maqueen motor.
-     */
 
-    //% weight=90
-    //% blockId=motor_MotorRun block="motor|%index|move|%Dir|at speed|%speed"
-    //% speed.min=0 speed.max=255
-    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
-    //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function motorRun(index: Motors, direction: Dir, speed: number): void {
-        let buf = pins.createBuffer(3);
-        if (index == 0) {
-            buf[0] = 0x00;
-            buf[1] = direction;
-            buf[2] = speed;
-            pins.i2cWriteBuffer(0x10, buf);
-        }
-        if (index == 1) {
-            buf[0] = 0x02;
-            buf[1] = direction;
-            buf[2] = speed;
-            pins.i2cWriteBuffer(0x10, buf);
-        }
-        if (index == 2) {
-            buf[0] = 0x00;
-            buf[1] = direction;
-            buf[2] = speed;
-            pins.i2cWriteBuffer(0x10, buf);
-            buf[0] = 0x02;
-            pins.i2cWriteBuffer(0x10, buf);
-        }
-    }
-
-    /**
-     * Stop the Maqueen motor.
-     */
-    //% weight=20
-    //% blockId=motor_motorStop block="motor |%motors stop"
-    //% motors.fieldEditor="gridpicker" motors.fieldOptions.columns=2 
-    export function motorStop(motors: Motors): void {
-        let buf = pins.createBuffer(3);
-        if (motors == 0) {
-            buf[0] = 0x00;
-            buf[1] = 0;
-            buf[2] = 0;
-            pins.i2cWriteBuffer(0x10, buf);
-        }
-        if (motors == 1) {
-            buf[0] = 0x02;
-            buf[1] = 0;
-            buf[2] = 0;
-            pins.i2cWriteBuffer(0x10, buf);
-        }
-
-        if (motors == 2) {
-            buf[0] = 0x00;
-            buf[1] = 0;
-            buf[2] = 0;
-            pins.i2cWriteBuffer(0x10, buf);
-            buf[0] = 0x02;
-            pins.i2cWriteBuffer(0x10, buf);
-        }
-
-    }
 
     /**
      * Read line tracking sensor.
@@ -359,13 +307,13 @@ namespace ToodleCar {
 	
 	/**
     * Choose direction, speed and for how long.
-    * @param dir Driving direction, eg: Direction.forward
+    * @param dir Driving OptDir, eg: OptDir.forward
     * @param speed Running speed, eg: 50
     * @param time Travel time, eg: 3
     */
     //% blockId=move_time block="go %dir at %speed\\% for %time seconds"
    //% speed.min=15 speed.max=100
-    export function moveTime(dir: Direction, speed: number, time: number): void {
+    export function moveTime(dir: OptDir, speed: number, time: number): void {
 	
 	 let motorspeed = (Math.abs(speed) * 255) / 100;
 	 let Leftspeed = 255;
