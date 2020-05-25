@@ -1,6 +1,6 @@
  
 # Maqueen / ToodleBit
-These code blocks have been adapted to run the Maqueen buggy using code blocks that fit in with the ToodleBit scheme of work.
+These code blocks have been adapted using the original Maqueen blocks to run the Maqueen buggy using code blocks that fit in with the ToodleBit scheme of work. 
 [Maqueen is an easy-to-use programming educational Robot](https://www.dfrobot.com.cn/goods-1802.html)
 
 
