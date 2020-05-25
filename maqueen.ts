@@ -16,6 +16,15 @@ let alreadyInit = 0
 let IrPressEvent = 0
 const MOTER_ADDRESSS = 0x10
 
+/**
+ * Line Sensor events 
+*/
+enum mystate {
+ //% block="found" 
+ FindLine = 1,
+ //% block="lost" 
+ LoseLine = 0
+    }
 enum PingUnit {
     //% block="cm"
     Centimeters,
@@ -208,6 +217,35 @@ namespace ToodleCar {
         }
     }
 
+		 /**
+     * Read line tracking sensor II.
+     */
+
+    //% weight=20
+    //% blockId=read_Patrol block="%patrol line sensor %mystate"
+    //% patrol.fieldEditor="gridpicker" patrol.fieldOptions.columns=2 
+	//% advanced=true
+    export function myreadPatrol(patrol: Patrol, SelectedState: mystate): boolean {
+        if (patrol == Patrol.PatrolLeft) {
+		
+            let LeftPin = pins.digitalReadPin(DigitalPin.P13);
+			
+			 if (LeftPin == SelectedState) {
+            return true;
+					} else { return false;}
+		
+		
+        } else if (patrol == Patrol.PatrolRight) {
+            let RightPin = pins.digitalReadPin(DigitalPin.P13);
+			
+			 if (RightPin == SelectedState) {
+            return true;
+					} else { return false;}
+        } else {
+            return false;
+        }
+    }
+	
     /**
      * Turn on/off the LEDs.
      */
