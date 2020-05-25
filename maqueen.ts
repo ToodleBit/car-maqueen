@@ -112,20 +112,22 @@ namespace ToodleCar {
         Low = 0x00
     }
 
-    export enum LED {
-        //% blockId="LEDLeft" block="left"
-        LEDLeft = 8,
-        //% blockId="LEDRight" block="right"
-        LEDRight = 12
-    }
 
     export enum LEDswitch {
-        //% blockId="turnOn" block="ON"
+        //% blockId="turnOn" block="on"
         turnOn = 0x01,
-        //% blockId="turnOff" block="OFF"
+        //% blockId="turnOff" block="off"
         turnOff = 0x00
     }
-
+    export enum LED {
+        //% blockId="LeftLED" block="Left"
+        LeftLED = 8,
+        //% blockId="RightLED" block="Right"
+        RightLED = 12,
+	 //% blockId="BothLED" block="All"
+        BothLED = 1
+    }
+	
     //% advanced=true shim=maqueenIR::initIR
     function initIR(pin: Pins): void {
         return
@@ -211,15 +213,18 @@ namespace ToodleCar {
      */
 
     //% weight=20
-    //% blockId=writeLED block="LEDlight |%led turn |%ledswitch"
+//% blockId=writeLED block="headlights %led|%ledswitch"
     //% led.fieldEditor="gridpicker" led.fieldOptions.columns=2 
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
     export function writeLED(led: LED, ledswitch: LEDswitch): void {
-        if (led == LED.LEDLeft) {
+        if (led == LED.LeftLED) {
             pins.digitalWritePin(DigitalPin.P8, ledswitch)
-        } else if (led == LED.LEDRight) {
+        } else if (led == LED.RightLED) {
             pins.digitalWritePin(DigitalPin.P12, ledswitch)
-        } else {
+        } else if (led == LED.BothLED) {
+            pins.digitalWritePin(DigitalPin.P12, ledswitch)
+			pins.digitalWritePin(DigitalPin.P8, ledswitch)
+        }else {
             return
         }
     }
