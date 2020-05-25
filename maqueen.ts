@@ -129,11 +129,11 @@ namespace ToodleCar {
         turnOff = 0x00
     }
     export enum LED {
-        //% blockId="LeftLED" block="Left"
+        //% blockId="LeftLED" block="left"
         LeftLED = 8,
-        //% blockId="RightLED" block="Right"
+        //% blockId="RightLED" block="right"
         RightLED = 12,
-	 //% blockId="BothLED" block="All"
+	 //% blockId="BothLED" block="all"
         BothLED = 1
     }
 	
@@ -197,25 +197,6 @@ namespace ToodleCar {
 
     }
 
-
-
-    /**
-     * Read line tracking sensor.
-     */
-
-    //% weight=20
-    //% blockId=read_Patrol block="read |%patrol line tracking sensor"
-    //% patrol.fieldEditor="gridpicker" patrol.fieldOptions.columns=2 
-	//% advanced=true
-    export function readPatrol(patrol: Patrol): number {
-        if (patrol == Patrol.PatrolLeft) {
-            return pins.digitalReadPin(DigitalPin.P13)
-        } else if (patrol == Patrol.PatrolRight) {
-            return pins.digitalReadPin(DigitalPin.P14)
-        } else {
-            return -1
-        }
-    }
 
 		 /**
      * Read line tracking sensor II.
