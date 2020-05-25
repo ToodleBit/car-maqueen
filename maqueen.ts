@@ -162,7 +162,7 @@ namespace ToodleCar {
      * Read ultrasonic sensor.
      */
 
-    //% blockId=ultrasonic_sensor block="sensor unit |%unit "
+    //% blockId=ultrasonic_sensor block="sonar unit |%unit "
     //% weight=95
     //% advanced=true
     export function Ultrasonic(unit: PingUnit, maxCmDistance = 500): number {
