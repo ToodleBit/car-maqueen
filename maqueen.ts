@@ -137,36 +137,7 @@ namespace ToodleCar {
         BothLED = 1
     }
 	
-    //% advanced=true shim=maqueenIR::initIR
-    function initIR(pin: Pins): void {
-        return
-    }
-
-    //% advanced=true shim=maqueenIR::onPressEvent
-    function onPressEvent(btn: RemoteButton, body: Action): void {
-        return
-    }
-
-    //% advanced=true shim=maqueenIR::getParam
-    function getParam(): number {
-        return 0
-    }
-
-    function maqueenInit(): void {
-        if (alreadyInit == 1) {
-            return
-        }
-        initIR(Pins.P16)
-        alreadyInit = 1
-    }
-
-
-    function IR_callback(a: Action): void {
-        maqueencb = a
-        IrPressEvent += 1
-        onPressEvent(IrPressEvent, maqueencb)
-    }
-
+  
     /**
      * Read ultrasonic sensor.
      */
